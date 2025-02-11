@@ -15,24 +15,32 @@ function downloadImage(url) {
 	return p
 }
 function downloadImages(arr){
+	let spinner = document.createElement("div")
+	spinner.id = "loading"
+	output.append(spinner)
 	let promises = []
 	for(let v of arr){
 		promises.push(downloadImage(v.url))
 	}
 	Promise.all(promises).then(() => {
-		console.log("Loaded")
-		for(let i=1; i<=arr.length; i++){
+		//console.log("Loaded")
+		spinner.style.display = "none"
+		for(let i=0; i<arr.length; i++){
 			let link = document.createElement('a');
-		    link.href = `path/to/image${i}`
-            link.download = `image${i}.jpg`;    
-			link.click()
+			link.href = 'path/to/image'
+            link.download = `image${i+1}.jpg`;    
+			//link.click()
 			let img = document.createElement('img');
-			img.src = "C:\Users\Debayudh"
+			img.src = arr[i].url
 			output.append(img)
 		}        
 	}).catch(() => {
-		console.log("Error occured while downloading")
+		//console.log("Error occured while downloading")
+		let error = document.createElement('div');
+		error.id = "error"
+		error.innerText = "Error occured while downloading"
+		output.append(error)
 	})
 }
 
-//downloadImages(images)
+btn.addEventListener("click", () => downloadImages(images))
